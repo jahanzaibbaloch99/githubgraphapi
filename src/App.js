@@ -16,8 +16,9 @@ function App() {
   });
 
   const authLink = setContext((_, { headers }) => {
+    console.log(headers, "E");
     // get the authentication token from local storage if it exists
-    const token = "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";
+    const token = "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 ";
     // return the headers to the context so httpLink can read them
     return {
       headers: {
@@ -31,6 +32,7 @@ function App() {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });
+  console.log(client, "CLIENT");
   return (
     <ApolloProvider client={client}>
       <Home />
