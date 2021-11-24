@@ -12,18 +12,19 @@ import { setContext } from "@apollo/client/link/context";
 
 function App() {
   const httpLink = createHttpLink({
-    uri: "https://api.github.com/graphql",
+    uri: process.env.REACT_APP_GITHUB_GRAPHAPI_ENDPOINT,
   });
 
   const authLink = setContext((_, { headers }) => {
     console.log(headers, "E");
     // get the authentication token from local storage if it exists
-    const token = "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 ";
+    const token = process.env.REACT_APP_GITHUB_ACCESS_TOKEN;
+    console.log(token, "TOK");
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : "",
+        authorization: token ? `bearer ${token}` : "",
       },
     };
   });
@@ -32,7 +33,7 @@ function App() {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });
-  console.log(client, "CLIENT");
+
   return (
     <ApolloProvider client={client}>
       <Home />
